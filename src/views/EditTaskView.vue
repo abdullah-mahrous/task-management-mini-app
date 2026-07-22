@@ -20,7 +20,7 @@ onMounted(async () => {
     task.value = taskStore.tasks.find(existingTask => existingTask.id == route.params.id);
 
     if (!task.value)
-        router.replace({ name: 'home' });
+        router.replace({ name: 'notFound' });
 })
 
 async function updateTask(updatedTask: Task) {

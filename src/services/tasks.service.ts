@@ -1,7 +1,7 @@
 import type { Task } from "../types/task";
 
 const STORAGE_KEY = "tasks";
-const RES_TIME = 500;
+const RES_TIME = 1000;
 
 function getStoredTasks(): Task[] {
   const tasks = localStorage.getItem(STORAGE_KEY);

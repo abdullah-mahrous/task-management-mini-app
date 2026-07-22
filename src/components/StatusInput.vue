@@ -21,6 +21,9 @@ const options = [
         <option selected hidden disabled value="">
             Select status
         </option>
+
+        <slot></slot>
+
         <option v-for="option in options" :key="option" :value="option">
             {{ option }}
         </option>

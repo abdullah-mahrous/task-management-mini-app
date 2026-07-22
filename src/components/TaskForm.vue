@@ -52,9 +52,9 @@ function saveTask() {
 </script>
 
 <template>
-    <section class="min-h-screen w-screen flex items-center align-center bg-[#f8f9fc]">
+    <section class="min-h-screen w-screen flex items-center align-center bg-[#f8f9fc] p-6">
         <form @submit.prevent="saveTask"
-            class="mx-auto  w-full max-w-3xl rounded-2xl border border-gray-200 p-6 shadow-sm sm:p-8">
+            class="sm:mx-auto w-full max-w-3xl rounded-2xl border border-gray-200 p-6 shadow-sm sm:p-8">
 
             <h2 class="text-4xl font-semibold text-center text-primary mb-8">
                 Add New Task
