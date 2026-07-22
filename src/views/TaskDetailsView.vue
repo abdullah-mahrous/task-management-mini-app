@@ -1,14 +1,17 @@
 <script setup lang="ts">
-import { computed, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 import { useTaskStore } from "../stores/tasks.store";
 
 import BaseBtn from "../components/BaseBtn.vue";
+import DeleteModal from "../components/DeleteModal.vue";
 
 const route = useRoute();
 const router = useRouter();
 const taskStore = useTaskStore();
+
+const showDeleteModal = ref(false);
 
 onMounted(async () => {
     if (taskStore.tasks.length == 0)
@@ -20,18 +23,11 @@ onMounted(async () => {
 
 const task = computed(() => taskStore.tasks.find(task => task.id === route.params.id));
 
-const statusClasses = computed(() => {
-    switch (task.value?.status) {
-        case "Done":
-            return "bg-green-100 text-green-700";
-
-        case "In Progress":
-            return "bg-yellow-100 text-yellow-700";
-
-        default:
-            return "bg-gray-100 text-gray-700";
-    }
-});
+const statusClasses = {
+    Pending: "bg-yellow-100 text-yellow-700",
+    "In Progress": "bg-blue-100 text-blue-700",
+    Done: "bg-green-100 text-green-700",
+};
 
 function formatDate(date: string) {
     return new Intl.DateTimeFormat("en-US", {
@@ -67,7 +63,7 @@ async function deleteTask() {
                     </p>
                 </div>
 
-                <span :class="statusClasses"
+                <span :class="statusClasses[task.status]"
                     class="rounded-full px-4 py-2 text-sm font-semibold flex justify-center align-center">
                     {{ task.status }}
                 </span>
@@ -98,10 +94,8 @@ async function deleteTask() {
 
                 <!-- Actions -->
                 <div class="flex flex-col gap-4 border-t border-gray-100 pt-8 sm:flex-row sm:justify-end">
-                    <base-btn
-                        class="text-white bg-danger hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60"
-                        @click="deleteTask" :disabled="taskStore.loading">
-                        {{ taskStore.loading ? "Deleting..." : 'Delete Task' }}
+                    <base-btn class="text-white bg-danger hover:bg-red-700" @click="showDeleteModal = true">
+                        Delete Task
                     </base-btn>
 
                     <base-btn class="text-white bg-primary hover:bg-sky-700"
@@ -109,6 +103,9 @@ async function deleteTask() {
                         Edit Task
                     </base-btn>
                 </div>
+
+                <delete-modal :open="showDeleteModal" :task-title="task.title" :loading="taskStore.loading"
+                    @cancel="showDeleteModal = false" @confirm="deleteTask" />
             </div>
         </div>
     </section>

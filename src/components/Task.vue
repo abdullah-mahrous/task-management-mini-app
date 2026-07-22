@@ -12,7 +12,7 @@ defineProps<{
 const router = useRouter();
 
 const emit = defineEmits<{
-    (e: "delete", id: string): void;
+    (e: "delete"): void;
     (e: "edit", task: Task): void;
 }>();
 

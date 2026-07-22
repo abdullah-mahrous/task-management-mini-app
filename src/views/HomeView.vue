@@ -11,6 +11,7 @@ import TaskCard from "../components/Task.vue";
 import AddTaskButton from "../components/AddTaskBtn.vue";
 import StatusFilter from "../components/StatusInput.vue";
 import BaseInput from "../components/BaseInput.vue";
+import DeleteModal from "../components/DeleteModal.vue";
 
 const taskStore = useTaskStore();
 const { loading, error } = storeToRefs(taskStore);
@@ -18,6 +19,8 @@ const { loading, error } = storeToRefs(taskStore);
 const searchText = ref("");
 const status = ref("All");
 const filteredTasks = ref<Task[]>([]);
+const showDeleteModal = ref(false);
+const selectedTask = ref<Task | null>(null);
 
 onMounted(async () => {
     await taskStore.fetchTasks();
@@ -42,6 +45,29 @@ function filterTasks() {
 
         return matchesSearch && matchesStatus;
     });
+}
+
+function openDeleteModal(task: Task) {
+    selectedTask.value = task;
+    showDeleteModal.value = true
+
+    console.log(task);
+
+}
+
+function confirmDelete() {
+    if (!selectedTask.value)
+        return;
+
+    deleteTask(selectedTask.value.id);
+
+    showDeleteModal.value = false;
+    selectedTask.value = null;
+}
+
+function closeDeleteModal() {
+    showDeleteModal.value = false;
+    selectedTask.value = null;
 }
 
 watch(debouncedSearch, filterTasks);
@@ -121,9 +147,13 @@ watch(status, filterTasks);
 
             <!-- Tasks -->
             <div v-else class="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-                <TaskCard v-for="task in filteredTasks" :key="task.id" :task="task" @delete="deleteTask" />
+                <TaskCard v-for="task in filteredTasks" :key="task.id" :task="task" @delete="openDeleteModal(task)" />
             </div>
+
         </template>
+
+        <delete-modal :open="showDeleteModal" :task-title="selectedTask?.title" :loading="loading"
+            @cancel="closeDeleteModal" @confirm="confirmDelete" />
 
         <AddTaskButton />
     </section>
