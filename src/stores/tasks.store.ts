@@ -51,8 +51,7 @@ export const useTaskStore = defineStore("tasks", () => {
 
             const index = tasks.value.findIndex(existingTask => existingTask.id === updatedTask.id);
 
-            if (index !== -1)
-                tasks.value[index] = updatedTask;
+            tasks.value[index] = updatedTask;
         } catch (err) {
             error.value =
                 err instanceof Error
@@ -85,7 +84,7 @@ export const useTaskStore = defineStore("tasks", () => {
         error,
         fetchTasks,
         addTask,
-        updateTask,
+        editTask,
         removeTask,
     };
 });

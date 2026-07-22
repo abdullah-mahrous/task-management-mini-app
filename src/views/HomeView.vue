@@ -7,7 +7,7 @@ import { useTaskStore } from "../stores/tasks.store";
 import TaskCard from "../components/Task.vue";
 import AddTaskButton from "../components/AddTaskBtn.vue";
 import SearchBar from "../components/SearchBar.vue";
-import StatusFilter from "../components/StatusFilter.vue";
+import StatusFilter from "../components/StatusInput.vue";
 
 const taskStore = useTaskStore();
 const { tasks, loading, error } = storeToRefs(taskStore);

@@ -18,11 +18,19 @@ const routes = [
         }
     },
     {
-        path: '/add-task',
+        path: '/tasks/new',
         name: 'addTask',
         component: () => import('../views/AddTaskView.vue'),
         meta: {
             title: "Add New Task",
+        }
+    },
+    {
+        path: '/tasks/:id/edit',
+        name: 'editTask',
+        component: () => import('../views/EditTaskView.vue'),
+        meta: {
+            title: "Edit Task",
         }
     },
     {

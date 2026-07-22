@@ -1,6 +1,7 @@
 import type { Task } from "../types/task";
 
 const STORAGE_KEY = "tasks";
+const RES_TIME = 500;
 
 function getStoredTasks(): Task[] {
   const tasks = localStorage.getItem(STORAGE_KEY);
@@ -24,7 +25,7 @@ export async function getTasks(): Promise<Task[]> {
         await new Promise<void>(resolve => setTimeout(() => {
             tasks = getStoredTasks();
             resolve();
-        }, 200))
+        }, RES_TIME))
         
         return tasks;
     } catch(err) {
@@ -46,7 +47,7 @@ export async function createTask(task: Omit<Task, "id">): Promise<Task> {
             saveTasks(tasks);
 
             resolve();
-        }, 200));
+        }, RES_TIME));
 
         return newTask;
     } catch (err) {
@@ -69,7 +70,7 @@ export async function updateTask(updatedTask: Task): Promise<Task> {
             saveTasks(tasks);
 
             resolve();
-        }, 200));
+        }, RES_TIME));
     } catch (err) {
         throw new Error("Error while updating task.");
     }
@@ -84,7 +85,7 @@ export async function deleteTask(id: string): Promise<Task[]> {
         await new Promise<void>(resolve => setTimeout(() => {
             saveTasks(tasks);
             resolve();
-        }, 200));
+        }, RES_TIME));
     } catch (err) {
         throw new Error("Error while deleting task.");
     }
