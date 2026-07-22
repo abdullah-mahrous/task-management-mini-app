@@ -1,1 +1,14 @@
 @import "tailwindcss";
+
+@theme {
+    /* colors */
+    --color-primary: #0084d1;
+    --color-danger: oklch(57.7% 0.245 27.325);
+
+    /* breakpoint */
+    --breakpoint-xs: 30rem;
+}
+
+.smooth-transition {
+    @apply transition-all ease-in-out duration-300
+}

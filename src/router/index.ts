@@ -6,8 +6,31 @@ const routes = [
         name: 'home',
         component: () => import('../views/HomeView.vue'),
         meta: {
-            title: "Abdullah Mahrous - Full-Stack Developer",
-            description: "Full-Stack Developer specializing in Vue, React, Node and Express. Explore my projects, technical notes, and development journey." 
+            title: "Tasks Manager - My Tasks",
+        }
+    },
+    {
+        path: '/tasks/:id',
+        name: 'taskDetails',
+        component: () => import('../views/TaskDetailsView.vue'),
+        meta: {
+            title: "Task Details",
+        }
+    },
+    {
+        path: '/add-task',
+        name: 'addTask',
+        component: () => import('../views/AddTaskView.vue'),
+        meta: {
+            title: "Add New Task",
+        }
+    },
+    {
+        path: '/:pathMatch(.*)*',
+        name: 'notFound',
+        component: () => import('../views/NotFoundView.vue'),
+        meta: {
+            title: "Not Found",
         }
     }
 ]
