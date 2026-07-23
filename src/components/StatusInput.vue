@@ -22,6 +22,7 @@ const options = [
             Select status
         </option>
 
+        <!-- to add aditional options -->
         <slot></slot>
 
         <option v-for="option in options" :key="option" :value="option">

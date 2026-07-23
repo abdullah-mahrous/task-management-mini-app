@@ -48,6 +48,7 @@ const router = createRouter({
     routes,
 })
 
+// adding title dynamiclly to every route
 router.beforeEach((to) => {
     document.title = to.meta.title || to.name
 })

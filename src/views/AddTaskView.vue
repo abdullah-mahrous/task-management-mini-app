@@ -6,13 +6,13 @@ import type { Task } from "../types/task";
 
 import TaskForm from "../components/TaskForm.vue";
 
-
 const router = useRouter();
 const taskStore = useTaskStore();
 
 async function createTask(task: Task) {
     await taskStore.addTask(task);
 
+    // redirect to home after creating task
     router.push({ name: 'home' });
 }
 </script>

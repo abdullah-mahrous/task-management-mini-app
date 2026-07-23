@@ -14,21 +14,25 @@ const taskStore = useTaskStore();
 const showDeleteModal = ref(false);
 
 onMounted(async () => {
+    // fetch tasks if the store tasks is empty (ofcourse if there is a real api i would implement getTaskById and get it already -_-)
     if (taskStore.tasks.length == 0)
         await taskStore.fetchTasks();
 
+    // redirecting to 404 page if not found
     if (!task.value)
         router.replace({ name: "notFound" });
 });
 
 const task = computed(() => taskStore.tasks.find(task => task.id === route.params.id));
 
+// to render every status with its theme
 const statusClasses = {
     Pending: "bg-yellow-100 text-yellow-700",
     "In Progress": "bg-blue-100 text-blue-700",
     Done: "bg-green-100 text-green-700",
 };
 
+// to display date as user friendly way
 function formatDate(date: string) {
     return new Intl.DateTimeFormat("en-US", {
         dateStyle: "long",
@@ -38,13 +42,14 @@ function formatDate(date: string) {
 async function deleteTask() {
     await taskStore.removeTask(route.params.id as string);
 
+    // redirecting to home after deleting
     router.replace({ name: "home" });
 }
 </script>
 
 <template>
     <section v-if="task" class="mx-auto max-w-4xl p-6">
-        <!-- Breadcrumb -->
+        <!-- navigate to home -->
         <button @click="router.push({ name: 'home' })"
             class="mb-8 inline-flex items-center gap-2 font-medium text-primary transition cursor-pointer hover:underline">
             ← Back

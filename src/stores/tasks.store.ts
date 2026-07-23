@@ -1,8 +1,10 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
+
 import type { Task } from "../types/task";
 import { getTasks, createTask, updateTask, deleteTask } from "../services/tasks.service";
 
+// i think everything is self explainatory here
 export const useTaskStore = defineStore("tasks", () => {
     const tasks = ref<Task[]>([]);
     const loading = ref(false);

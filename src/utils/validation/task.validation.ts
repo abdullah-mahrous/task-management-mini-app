@@ -5,6 +5,7 @@ type TaskValidationErrors = {
     dueDate: string;
 }
 
+// validation creteria: title and due date are required, and due date must be in the future
 export function validateTask(task: Task): TaskValidationErrors {
     const errors: TaskValidationErrors = {
         title: "",
@@ -17,6 +18,7 @@ export function validateTask(task: Task): TaskValidationErrors {
     if (!task.dueDate) {
         errors.dueDate = "Due date is required.";
     } else {
+        // get current date and compare it to due date to validate it is in the future
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 

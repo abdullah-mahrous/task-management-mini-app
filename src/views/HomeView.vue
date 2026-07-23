@@ -4,7 +4,6 @@ import { storeToRefs } from "pinia";
 
 import { useTaskStore } from "../stores/tasks.store";
 import { useDebounce } from "../composables/debounce";
-
 import type { Task } from "../types/task";
 
 import TaskCard from "../components/Task.vue";
@@ -12,6 +11,7 @@ import AddTaskButton from "../components/AddTaskBtn.vue";
 import StatusFilter from "../components/StatusInput.vue";
 import BaseInput from "../components/BaseInput.vue";
 import DeleteModal from "../components/DeleteModal.vue";
+import TasksError from "../assets/icons/TasksError.vue";
 
 const taskStore = useTaskStore();
 const { loading, error } = storeToRefs(taskStore);
@@ -24,14 +24,17 @@ const selectedTask = ref<Task | null>(null);
 
 onMounted(async () => {
     await taskStore.fetchTasks();
+    // so the filteredTasks get initialized with all data and reset all filters
     filterTasks();
 });
 
+// i tried react but vue is the best
 const debouncedSearch = useDebounce(searchText, 300);
 
 async function deleteTask(id: string) {
     await taskStore.removeTask(id);
 
+    // to remove deleted task from the rendered tasks
     filteredTasks.value = filteredTasks.value.filter(task => task.id !== id)
 }
 
@@ -43,6 +46,7 @@ function filterTasks() {
 
         const matchesStatus = status.value === "All" || task.status === status.value;
 
+        // combining both filter and search if applicable
         return matchesSearch && matchesStatus;
     });
 }
@@ -50,16 +54,13 @@ function filterTasks() {
 function openDeleteModal(task: Task) {
     selectedTask.value = task;
     showDeleteModal.value = true
-
-    console.log(task);
-
 }
 
-function confirmDelete() {
+async function confirmDelete() {
     if (!selectedTask.value)
         return;
 
-    deleteTask(selectedTask.value.id);
+    await deleteTask(selectedTask.value.id);
 
     showDeleteModal.value = false;
     selectedTask.value = null;
@@ -70,6 +71,7 @@ function closeDeleteModal() {
     selectedTask.value = null;
 }
 
+// watching them closely
 watch(debouncedSearch, filterTasks);
 watch(status, filterTasks);
 </script>
@@ -93,7 +95,8 @@ watch(status, filterTasks);
         </div>
 
         <!-- Loading -->
-        <div v-if="loading" class="flex min-h-[22rem] flex-col items-center justify-center gap-5">
+        <div v-if="loading" class="flex min-h-88 flex-col items-center justify-center gap-5">
+            <!-- a cool feature in vue *_- -->
             <div class="h-12 w-12 animate-spin rounded-full border-4 border-primary border-t-transparent" />
 
             <p class="text-lg font-medium text-gray-600">
@@ -103,12 +106,9 @@ watch(status, filterTasks);
 
         <!-- Error -->
         <div v-else-if="error"
-            class="flex min-h-[22rem] flex-col items-center justify-center rounded-2xl border border-red-200 bg-red-50 p-8 text-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="mb-4 h-14 w-14 text-red-500" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M12 9v2m0 4h.01M10.29 3.86l-8 14A1 1 0 003.14 19h17.72a1 1 0 00.85-1.14l-8-14a1 1 0 00-1.72 0z" />
-            </svg>
+            class="flex min-h-88 flex-col items-center justify-center rounded-2xl border border-red-200 bg-red-50 p-8 text-center">
+
+            <tasks-error class="mb-4 size-14 text-red-500" />
 
             <h2 class="text-2xl font-semibold text-red-700">
                 Failed to load tasks
@@ -129,19 +129,15 @@ watch(status, filterTasks);
             <!-- Empty -->
             <div v-if="!filteredTasks.length"
                 class="flex min-h-88 flex-col items-center justify-center rounded-2xl border border-dashed border-gray-300 bg-gray-50 p-8 text-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="mb-5 h-14 w-14 text-gray-400" fill="none"
-                    viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                        d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                </svg>
+
+                <clipbourd class="mb-5 size-14 text-gray-400" />
 
                 <h2 class="text-2xl font-semibold text-gray-700">
                     No tasks found
                 </h2>
 
                 <p class="mt-2 max-w-md text-gray-500">
-                    We couldn't find any tasks matching your current search or
-                    filter. Try adjusting the filters or create a new task.
+                    We couldn't find any tasks. Try to create a new task.
                 </p>
             </div>
 

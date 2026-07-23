@@ -20,10 +20,12 @@ const props = withDefaults(
     }
 );
 
+// emitting the data so the actions happen in the parent
 const emit = defineEmits<{
     (e: "submit", task: Task): void;
 }>();
 
+// adding values if editing
 const form = reactive({
     id: props.initialValues?.id ?? crypto.randomUUID(),
     title: props.initialValues?.title ?? "",
@@ -32,6 +34,7 @@ const form = reactive({
     status: props.initialValues?.status ?? "Pending",
 });
 
+// for the html date input validation
 let acceptedDate = new Date().toISOString().split('T')[0];
 
 const errors = reactive({
@@ -42,6 +45,7 @@ const errors = reactive({
 function saveTask() {
     Object.assign(errors, validateTask(form));
 
+    // to render every error alone and submit only when there is no errors
     const hasErrors = Object.values(errors).some(Boolean);
 
     if (hasErrors)
@@ -62,7 +66,6 @@ function saveTask() {
 
             <div class="space-y-6">
 
-                <!-- Title -->
                 <div>
                     <label for="title" class="mb-2 block text-lg font-medium text-gray-700">
                         Title
@@ -76,7 +79,6 @@ function saveTask() {
                     </p>
                 </div>
 
-                <!-- Description -->
                 <div>
                     <label for="description" class="mb-2 block text-lg font-medium text-gray-600">
                         Description
@@ -87,7 +89,6 @@ function saveTask() {
                         class="w-full bg-white rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100" />
                 </div>
 
-                <!-- Date + Status -->
                 <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
 
                     <div>
@@ -113,7 +114,6 @@ function saveTask() {
 
                 </div>
 
-                <!-- Submit -->
                 <div class="flex justify-end pt-2">
                     <base-btn type="submit" :disabled="loading"
                         class="disabled:cursor-not-allowed disabled:opacity-60 bg-primary text-white hover:bg-sky-700">

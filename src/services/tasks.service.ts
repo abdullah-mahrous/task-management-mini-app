@@ -1,21 +1,25 @@
 import type { Task } from "../types/task";
 
+// im using local storage to maintain data and setTimeOut to mimick http requests (i thought about using json-server but it would require you to install and run it so i thought this is better) 
+
 const STORAGE_KEY = "tasks";
 const RES_TIME = 1000;
 
 function getStoredTasks(): Task[] {
-  const tasks = localStorage.getItem(STORAGE_KEY);
+    const tasks = localStorage.getItem(STORAGE_KEY);
 
-  if (!tasks) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify([]));
-    return [];
-  }
+    // storing empty array if there is no tasks to maintain workflow
+    if (!tasks) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify([]));
+        return [];
+    }
 
-  return JSON.parse(tasks);
+    return JSON.parse(tasks);
 }
 
+// reminds me of Model.save in mongoose
 function saveTasks(tasks: Task[]) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
 }
 
 export async function getTasks(): Promise<Task[]> {

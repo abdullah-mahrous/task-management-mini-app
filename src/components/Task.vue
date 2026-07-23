@@ -26,6 +26,7 @@ const statusClasses = {
 <template>
     <div
         class="flex flex-col rounded-xl border border-gray-200 bg-white p-5 shadow-sm smooth-transition hover:-translate-y-1 hover:shadow-lg">
+
         <RouterLink :to="`/tasks/${task.id}`" class="text-xl font-semibold text-sky-700 hover:underline">
             {{ task.title }}
         </RouterLink>
@@ -52,7 +53,7 @@ const statusClasses = {
                 Edit
             </base-btn>
 
-            <base-btn class="hover:bg-red-700 bg-danger text-white" @click="emit('delete', task.id)">
+            <base-btn class="hover:bg-red-700 bg-danger text-white" @click="emit('delete')">
                 Delete
             </base-btn>
         </div>
