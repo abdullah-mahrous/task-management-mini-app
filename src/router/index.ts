@@ -50,7 +50,7 @@ const router = createRouter({
 
 // adding title dynamiclly to every route
 router.beforeEach((to) => {
-    document.title = to.meta.title || to.name
+    document.title = to.meta.title;
 })
 
 export default router

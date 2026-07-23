@@ -3,6 +3,7 @@ import { createPinia, setActivePinia } from "pinia";
 
 import { useTaskStore } from "../stores/tasks.store";
 import { getTasks, createTask, updateTask, deleteTask } from "../services/tasks.service";
+import type { Task } from "../types/task";
 
 // mocking store functions so it wont affect data or invoke http request (if there were any)
 vi.mock("../services/tasks.service", () => ({
@@ -12,7 +13,7 @@ vi.mock("../services/tasks.service", () => ({
     deleteTask: vi.fn(),
 }));
 
-const mockTasks = [
+const mockTasks: Task[] = [
     {
         id: "1",
         title: "Vue",
@@ -69,7 +70,7 @@ describe("Task Store", () => {
     });
 
     it("adds a task", async () => {
-        const newTask = {
+        const newTask: Task = {
             id: "3",
             title: "Pinia",
             description: "",
