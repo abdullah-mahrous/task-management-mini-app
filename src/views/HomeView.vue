@@ -12,6 +12,7 @@ import StatusFilter from "../components/StatusInput.vue";
 import BaseInput from "../components/BaseInput.vue";
 import DeleteModal from "../components/DeleteModal.vue";
 import TasksError from "../assets/icons/TasksError.vue";
+import Clipbourd from "../assets/icons/Clipbourd.vue";
 
 const taskStore = useTaskStore();
 const { loading, error } = storeToRefs(taskStore);
